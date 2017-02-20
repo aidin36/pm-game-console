@@ -94,6 +94,12 @@ void graphic_update()
  */
 void graphic_hero_update()
 {
+  if (state == LOSE)
+  {
+    lcd.setCursor(11, 4);
+    lcd.write("You Lose");
+  }
+
   // Cleaning previous location of hero by re-drawing the first line.
   for (int i = 0;i < 4;i++)
   {
@@ -101,8 +107,13 @@ void graphic_hero_update()
 
     byte line_data = lines[i][0];
 
+    // If player lose, draw start instead of the hero.
+    if (state == LOSE && i == hero_position)
+    {
+      lcd.write("*");
+    }
     // We draw blocks over the hero. i.e. we only draw hero if location is blank.
-    if (line_data == BLANK)
+    else if (line_data == BLANK)
     {
       if (i == hero_position)
       {

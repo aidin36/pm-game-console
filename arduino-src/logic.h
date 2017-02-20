@@ -4,6 +4,11 @@
 #define HUMAN byte(2)
 #define BLANK byte(255)
 
+#define PLAYING 1
+#define LOSE 0
+
+byte state = PLAYING;
+
 byte* lines[4];
 
 // Initial position of plane.
@@ -37,6 +42,14 @@ void move_screen()
     {
       lines[i][18] = BLANK;
     }
+  }
+}
+
+void check_losing_condition()
+{
+  if (lines[hero_position][0] == BLOCK)
+  {
+    state = LOSE;
   }
 }
 
@@ -76,6 +89,12 @@ void logic_setup()
  */
 bool logic_update(bool up_pressed, bool down_pressed)
 {
+  if (state == LOSE)
+  {
+    // If player lose, do nothing anymore.
+    return;
+  }
+  
   /*
    * Calculating new position of hero.
    */
@@ -93,6 +112,8 @@ bool logic_update(bool up_pressed, bool down_pressed)
       hero_position += 1;
     }
   }
+
+  check_losing_condition();
 
   if (millis() - last_screen_move >= moving_rate)
   {
