@@ -92,7 +92,7 @@ bool logic_update(bool up_pressed, bool down_pressed)
   if (state == LOSE)
   {
     // If player lose, do nothing anymore.
-    return;
+    return false;
   }
   
   /*
