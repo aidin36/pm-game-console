@@ -14,6 +14,8 @@ Then, to upload the code on Arduino, copy `Arduino-src` directory into your Ardu
 
 If you are on Gnu/Linux, you can link the directory inside your workspace to `Arduino-src` too.
 
+*Note:* Pay attention to the notes written in the `bread_board.png` file.
+
 Copyright
 ---------
 
