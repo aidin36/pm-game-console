@@ -52,6 +52,7 @@ unsigned int pre_designed_lines[NUMBER_OF_PREDEFINED][4] =
 
 byte current_predefined_path = 0;
 byte current_predefined_index = 0;
+byte flip = 0;
 
 /*
  * Moves the screen to the left. i.e. moves blocks toward the plane.
@@ -72,7 +73,8 @@ void move_screen()
     // Randomly select another pre-defined path.
     current_predefined_path = random(NUMBER_OF_PREDEFINED);
     current_predefined_index = 16;
-
+    flip = random(2);
+    
     // Adding an empty column, to ensure there's always a path.
     lines[0][18] = BLANK;
     lines[1][18] = BLANK;
@@ -84,14 +86,21 @@ void move_screen()
 
   for (int i = 0;i < 4;i++)
   {
-    Serial.println(current_predefined_index);
-    if (pre_designed_lines[current_predefined_path][i] & (1<<(current_predefined_index - 1)))
+    // We randomly flip the path. This way, we can have twice the paths!
+    int j = i;
+    if (flip == 1)
     {
-      lines[i][18] = BLOCK;
+      j = 3 - i;
+    }
+    
+    Serial.println(current_predefined_index);
+    if (pre_designed_lines[current_predefined_path][j] & (1<<(current_predefined_index - 1)))
+    {
+      lines[j][18] = BLOCK;
     }
     else
     {
-      lines[i][18] = BLANK;
+      lines[j][18] = BLANK;
     }
   }
 
