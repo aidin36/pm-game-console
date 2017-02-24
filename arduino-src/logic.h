@@ -18,6 +18,42 @@ unsigned long last_screen_move = millis();
 unsigned long moving_rate = 500;
 
 /*
+ * These are pre-designed lines of blocks. We randomly select one of these and
+ * put it in front of our hero.
+ */
+#define NUMBER_OF_PREDEFINED 4
+unsigned int pre_designed_lines[NUMBER_OF_PREDEFINED][4] =
+{
+  {
+     54532, //1101010100000100
+     12354, //0011000001000010
+     33449, //1000001010101001
+     24336, //0101111100010000
+  },
+  {
+     65528, //1111111111111000
+     36803, //1000111111000011
+     8727,  //0010001000010111
+     63743  //1111100011111111
+  },
+  {
+     32536, //0111111100011000
+     13891, //0011011001000011
+     33363, //1000001001010011
+     51440  //1100100011110000
+  },
+  {
+     20754, //0101000100010010
+     17744, //0100010101010000
+     21586, //0101010001010010
+     5442   //0001010101000010
+  },
+};
+
+byte current_predefined_path = 0;
+byte current_predefined_index = 0;
+
+/*
  * Moves the screen to the left. i.e. moves blocks toward the plane.
  */
 void move_screen()
@@ -30,12 +66,27 @@ void move_screen()
     lines[3][c] = lines[3][c + 1];
   }
 
-  // For now, blocks appears randomly.
+  // Adding new blocks.
+  if (current_predefined_index == 0)
+  {
+    // Randomly select another pre-defined path.
+    current_predefined_path = random(NUMBER_OF_PREDEFINED);
+    current_predefined_index = 16;
+
+    // Adding an empty column, to ensure there's always a path.
+    lines[0][18] = BLANK;
+    lines[1][18] = BLANK;
+    lines[2][18] = BLANK;
+    lines[3][18] = BLANK;
+
+    return;
+  }
+
   for (int i = 0;i < 4;i++)
   {
-    if (random(4) == 3)
+    Serial.println(current_predefined_index);
+    if (pre_designed_lines[current_predefined_path][i] & (1<<(current_predefined_index - 1)))
     {
-      // 25% chance that a block appears.
       lines[i][18] = BLOCK;
     }
     else
@@ -43,6 +94,8 @@ void move_screen()
       lines[i][18] = BLANK;
     }
   }
+
+  current_predefined_index--;
 }
 
 void check_losing_condition()
@@ -79,6 +132,9 @@ void logic_setup()
     lines[2][i] = BLANK;
     lines[3][i] = BLANK;
   }
+
+
+  Serial.begin(9600);
 }
 
 /*
