@@ -1,16 +1,19 @@
 /*
- * The LCD:
- * LCD RS pin to digital pin 8
- * LCD Enable pin to digital pin 6
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * LCD BLA pin to 5V
- * LCD BLK pin to GND
- * LCD VCC pin to 5V
- * LCD V0 passed through 330 ohms to GND
+ * This file is part of "PM Game Console". (see <https://github.com/aidin36/pm-game-console>)
+ * Copyright (C) 2017, Aidin Gharibnavaz <aidin@aidinhut.com>
+ *
+ * "PM Game Console" is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * "PM Game Console" is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ *  along with "PM Game Console".  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "logic.h"
