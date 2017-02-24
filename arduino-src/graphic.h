@@ -76,6 +76,45 @@ void draw_line(byte line_no, byte* line_data)
 }
 
 /*
+ * Draw the score on the screen.
+ */
+void draw_score()
+{
+  short score_to_show = score;
+  if (score < 0)
+  {
+    score_to_show = 0;
+  }
+
+  short fourth_digit = score_to_show / 1000;
+  short third_digit = (score_to_show / 100) - (fourth_digit * 10);
+  short second_digit = (score_to_show / 10) - (fourth_digit * 100 + third_digit * 10);
+  short first_digit = score_to_show - (fourth_digit * 1000 + third_digit * 100 + second_digit * 10);
+
+  // We only move cursor if a digit have a value. Because LCD is slow
+  // and we don't want to send unnecessary commands to it.
+
+  lcd.setCursor(0, 3);
+  lcd.print(first_digit);
+
+  if (second_digit > 0)
+  {
+    lcd.setCursor(0, 2);
+    lcd.print(second_digit);
+  }
+  if (third_digit > 0)
+  {
+    lcd.setCursor(0, 1);
+    lcd.print(third_digit);
+  }
+  if (fourth_digit > 0)
+  {
+    lcd.setCursor(0, 0);
+    lcd.print(fourth_digit);
+  }
+}
+
+/*
  * Updates the screen. i.e. blocks and humans.
  */
 void graphic_update()
@@ -87,6 +126,8 @@ void graphic_update()
   {
     draw_line(i, lines[i]);
   }
+
+  draw_score();
 }
 
 /*

@@ -17,6 +17,9 @@ short hero_position = 2;
 unsigned long last_screen_move = millis();
 unsigned long moving_rate = 500;
 
+// Score starts with a negative number, because first columns are empty!
+short score = -15;
+
 /*
  * These are pre-designed lines of blocks. We randomly select one of these and
  * put it in front of our hero.
@@ -93,7 +96,6 @@ void move_screen()
       j = 3 - i;
     }
     
-    Serial.println(current_predefined_index);
     if (pre_designed_lines[current_predefined_path][j] & (1<<(current_predefined_index - 1)))
     {
       lines[j][18] = BLOCK;
@@ -112,6 +114,11 @@ void check_losing_condition()
   if (lines[hero_position][0] == BLOCK)
   {
     state = LOSE;
+  }
+  else
+  {
+    // Increase the score if player not lose yet.
+    score++;
   }
 }
 
@@ -141,9 +148,6 @@ void logic_setup()
     lines[2][i] = BLANK;
     lines[3][i] = BLANK;
   }
-
-
-  Serial.begin(9600);
 }
 
 /*
@@ -178,14 +182,14 @@ bool logic_update(bool up_pressed, bool down_pressed)
     }
   }
 
-  check_losing_condition();
-
   if (millis() - last_screen_move >= moving_rate)
   {
     // Moving the screen (blocks) every 500ms.
     // TODO: This should speed up as the game progress.
     move_screen();
     last_screen_move = millis();
+
+    check_losing_condition();
 
     return true;
   }
